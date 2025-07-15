@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Upload, Button, Typography, Card, Space, message, Spin } from "antd";
 import { UploadOutlined, SoundOutlined } from "@ant-design/icons";
-import axios from "axios";
+import api from "../api"; 
 import Header from "./Header";
 
 const { Title, Text } = Typography;
@@ -18,7 +18,7 @@ function AudioMerger() {
         } else if (type === "bg") {
             setBg(file);
         }
-        return false; // Prevent default upload behavior
+        return false; 
     };
 
     const handleSubmit = async () => {
@@ -33,8 +33,8 @@ function AudioMerger() {
             formData.append("voice", voice);
             formData.append("bg", bg);
 
-            const res = await axios.post("http://localhost:5000/api/audio/merge", formData);
-            setMergedUrl(`http://localhost:5000${res.data.file}`);
+            const res = await api.post("/audio/merge", formData);
+            setMergedUrl(`${process.env.REACT_APP_API_BASE_URL.replace('/api', '')}${res.data.file}`);
             message.success("Audio merged successfully!");
         } catch (error) {
             console.error(error);
@@ -45,57 +45,56 @@ function AudioMerger() {
 
     return (
         <>
-        <Header/>
-        
-         <div style={{ maxWidth: 500, margin: "64px auto", padding: 24 }}>
-            <Card bordered style={{ borderRadius: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
-                <Space direction="vertical" style={{ width: "100%" }} size="large">
-                    <Title level={3} style={{ textAlign: "center" }}>
-                        <SoundOutlined /> Audio Merger
-                    </Title>
+            <Header />
 
-                    <Text strong>1️⃣ Select your audio files</Text>
-                    <Upload
-                        beforeUpload={(file) => handleFileChange(file, "voice")}
-                        accept=".mp3,.wav,.ogg"
-                        showUploadList={{ showRemoveIcon: false }}
-                        maxCount={1}
-                    >
-                        <Button icon={<UploadOutlined />}>Upload Voice Audio</Button>
-                    </Upload>
+            <div style={{ maxWidth: 500, margin: "64px auto", padding: 24 }}>
+                <Card bordered style={{ borderRadius: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.1)" }}>
+                    <Space direction="vertical" style={{ width: "100%" }} size="large">
+                        <Title level={3} style={{ textAlign: "center" }}>
+                            <SoundOutlined /> Audio Merger
+                        </Title>
 
-                    <Upload
-                        beforeUpload={(file) => handleFileChange(file, "bg")}
-                        accept=".mp3,.wav,.ogg"
-                        showUploadList={{ showRemoveIcon: false }}
-                        maxCount={1}
-                    >
-                        <Button icon={<UploadOutlined />}>Upload Background Audio</Button>
-                    </Upload>
+                        <Text strong>1️⃣ Select your audio files</Text>
+                        <Upload
+                            beforeUpload={(file) => handleFileChange(file, "voice")}
+                            accept=".mp3,.wav,.ogg"
+                            showUploadList={{ showRemoveIcon: false }}
+                            maxCount={1}
+                        >
+                            <Button icon={<UploadOutlined />}>Upload Voice Audio</Button>
+                        </Upload>
 
-                    <Text strong>2️⃣ Sort your audio</Text>
-                    <Text type="secondary">(Voice will play over background)</Text>
+                        <Upload
+                            beforeUpload={(file) => handleFileChange(file, "bg")}
+                            accept=".mp3,.wav,.ogg"
+                            showUploadList={{ showRemoveIcon: false }}
+                            maxCount={1}
+                        >
+                            <Button icon={<UploadOutlined />}>Upload Background Audio</Button>
+                        </Upload>
 
-                    <Button
-                        type="primary"
-                        onClick={handleSubmit}
-                        block
-                        disabled={loading}
-                    >
-                        {loading ? <Spin size="small" /> : "Merge Audio"}
-                    </Button>
+                        <Text strong>2️⃣ Sort your audio</Text>
+                        <Text type="secondary">(Voice will play over background)</Text>
 
-                    {mergedUrl && (
-                        <div style={{ marginTop: 24, textAlign: "center" }}>
-                            <Title level={4}>🔊 Merged Audio</Title>
-                            <audio controls src={mergedUrl} style={{ width: "100%" }} />
-                        </div>
-                    )}
-                </Space>
-            </Card>
-        </div>
+                        <Button
+                            type="primary"
+                            onClick={handleSubmit}
+                            block
+                            disabled={loading}
+                        >
+                            {loading ? <Spin size="small" /> : "Merge Audio"}
+                        </Button>
+
+                        {mergedUrl && (
+                            <div style={{ marginTop: 24, textAlign: "center" }}>
+                                <Title level={4}>🔊 Merged Audio</Title>
+                                <audio controls src={mergedUrl} style={{ width: "100%" }} />
+                            </div>
+                        )}
+                    </Space>
+                </Card>
+            </div>
         </>
-       
     );
 }
 

@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 import path from "path";
 import cors from "cors";
 import dotenv from "dotenv";
-import serverless from "serverless-http";
+
 import authRoutes from "./routes/authRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import audioRoutes from "./routes/audioRoutes.js";
+import mergeRoutes from "./routes/mergeRoutes.js";
 
 dotenv.config();
 
@@ -39,9 +40,10 @@ await connectToDatabase();
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/audio", audioRoutes);
+app.use("/api/merge", mergeRoutes);
 
 app.get('/', (req, res) => {
   res.send('<h1>Welcome to Voice Recorder App</h1>');
 });
 
-export const handler = serverless(app);
+export default app;
