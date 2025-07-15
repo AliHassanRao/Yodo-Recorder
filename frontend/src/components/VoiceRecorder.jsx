@@ -7,8 +7,10 @@ const { Title, Text } = Typography;
 const VoiceRecorder = () => {
   const [recordings, setRecordings] = useState([]);
   const mediaRef = useRef(null);
-  let mediaRecorder = null;
-  const chunks = [];
+
+  // Use refs for mediaRecorder and chunks so their values persist
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
 
   useEffect(() => {
     loadRecordings();
@@ -27,10 +29,20 @@ const VoiceRecorder = () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaRef.current.srcObject = stream;
-      mediaRecorder = new MediaRecorder(stream);
-      mediaRecorder.ondataavailable = e => chunks.push(e.data);
-      mediaRecorder.onstop = upload;
-      mediaRecorder.start();
+
+      // Initialize mediaRecorder and store in ref
+      mediaRecorderRef.current = new MediaRecorder(stream);
+
+      // Clear previous chunks
+      chunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = e => {
+        chunksRef.current.push(e.data);
+      };
+
+      mediaRecorderRef.current.onstop = upload;
+
+      mediaRecorderRef.current.start();
       message.success('Recording started');
     } catch (err) {
       message.error('Could not access microphone');
@@ -38,20 +50,20 @@ const VoiceRecorder = () => {
   };
 
   const stop = () => {
-    if (mediaRecorder) {
-      mediaRecorder.stop();
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
       mediaRef.current.srcObject.getTracks().forEach(t => t.stop());
       message.success('Recording stopped');
     }
   };
 
   const upload = async () => {
-    const blob = new Blob(chunks, { type: 'audio/webm' });
+    const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
     const form = new FormData();
     form.append('audio', blob, 'recording.webm');
     try {
       await api.post('/recordings', form);
-      chunks.length = 0;
+      chunksRef.current = [];
       loadRecordings();
       message.success('Recording uploaded');
     } catch (err) {
@@ -83,7 +95,7 @@ const VoiceRecorder = () => {
         renderItem={r => (
           <List.Item key={r._id}>
             <Space direction="vertical">
-              <audio controls src={`http://localhost:5000/api/recordings/${r._id}`} />
+              <audio controls src={`${api.defaults.baseURL}/recordings/${r._id}`} />
               <Text type="secondary">{new Date(r.createdAt).toLocaleString()}</Text>
             </Space>
           </List.Item>

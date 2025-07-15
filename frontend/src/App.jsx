@@ -27,7 +27,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={authState.isLoggedIn ? <Navigate to="/" /> : <Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/voice/add" element={authState.isLoggedIn ? <VoiceRecorder /> : <Navigate to="/login" state={{ redirectUrl: "/tasks/add" }} />} />
+          <Route path="/voice/add" element={authState.isLoggedIn ? <VoiceRecorder /> : <Navigate to="/login" state={{ redirectUrl: "/voice/add" }} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

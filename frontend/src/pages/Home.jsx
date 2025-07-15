@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Layout, Typography, Button, Space } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons';
+import { Layout, Typography, Button } from 'antd';
 import MainLayout from '../layouts/MainLayout';
 
 const { Content } = Layout;
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const Home = () => {
   const authState = useSelector((state) => state.authReducer);
@@ -18,45 +17,37 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <Content style={{ padding: '24px' }}>
+      <Content style={{ padding: '48px 24px', maxWidth: '1200px', margin: '0 auto' }}>
         {!isLoggedIn ? (
           <div
             style={{
-              background: '#1890ff',
-              color: '#fff',
-              height: '40vh',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
+              backdropFilter: 'blur(10px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              borderRadius: '12px',
+              padding: '40px 24px',
               textAlign: 'center',
-              padding: '24px',
+              color: '#fff',
+              marginTop: '80px',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
             }}
           >
-            <Title level={2} style={{ color: '#fff', marginBottom: '16px' }}>
-              Welcome to  Yodo Voice Recorder
+            <Title level={3} style={{ color: '#fff', marginBottom: '20px' }}>
+              Please log in first to record your voice.
             </Title>
-            <Link to="/signup">
-              <Button type="primary" size="large">
-                <Space>
-                  <Text strong style={{ color: '#fff' }}>
-                    Join now to to record your voice
-                  </Text>
-                  <ArrowRightOutlined />
-                </Space>
+            <Link to="/login">
+              <Button type="primary" size="large" style={{ padding: '10px 32px' }}>
+                Login
               </Button>
             </Link>
           </div>
         ) : (
-          <>
-            
- <Link to="/voice/add">
-  <Button type="primary" size="large">
-    Record new voice
-  </Button>
-</Link>
-
-          </>
+          <div style={{ textAlign: 'center', marginTop: '60px' }}>
+            <Link to="/voice/add">
+              <Button type="primary" size="large" style={{ padding: '12px 32px', fontSize: '16px' }}>
+                Record New Voice
+              </Button>
+            </Link>
+          </div>
         )}
       </Content>
     </MainLayout>

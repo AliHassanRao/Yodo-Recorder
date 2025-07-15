@@ -40,7 +40,7 @@ app.use("/api/profile", profileRoutes);
 app.use('/api', recordingRoutes);
 
 app.get('/', (req, res) => {
-  res.send('<h1>Welcome to Task Management App</h1>');
+  res.send('<h1>Welcome to  Voice Recorder App</h1>');
 });
 
 const port = process.env.PORT || 5000;

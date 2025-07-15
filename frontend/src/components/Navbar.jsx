@@ -74,7 +74,7 @@ const Navbar = () => {
           {authState.isLoggedIn ? (
             <>
               <Menu.Item key="add-task" icon={<PlusOutlined />}>
-                <Link to="/tasks/add">Add Task</Link>
+                <Link to="/voice/add">Add Voice</Link>
               </Menu.Item>
               <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogoutClick} danger>
                 Logout
