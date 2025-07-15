@@ -28,7 +28,6 @@ const SignupForm = () => {
     const errors = validateManyFields('signup', formData);
     setFormErrors({});
     
-    // Validate form data
     if (errors.length > 0) {
       setFormErrors(errors.reduce((total, ob) => ({ ...total, [ob.field]: ob.err }), {}));
       return;
@@ -37,12 +36,12 @@ const SignupForm = () => {
     const config = { url: '/auth/signup', method: 'post', data: formData };
 
     try {
-      await fetchData(config); // This will handle the API request
+      await fetchData(config); 
       navigate('/login');
     } catch (error) {
-      // Show a generic message or error handling if the email already exists
+    
       if (error.response?.data?.msg) {
-        setFormErrors({ email: error.response.data.msg }); // Set the error on the email field
+        setFormErrors({ email: error.response.data.msg }); 
       } else {
         message.error('An error occurred. Please try again later.');
       }
@@ -130,9 +129,9 @@ const SignupForm = () => {
                 onClick={handleSubmit}
                 style={{
                   width: '100%',
-                  backgroundColor: '#1890ff', // Primary color
-                  borderColor: '#1890ff', // Primary color
-                  color: '#fff', // Text color
+                  backgroundColor: '#1890ff', 
+                  borderColor: '#1890ff',
+                  color: '#fff', 
                 }}
               >
                 Submit
