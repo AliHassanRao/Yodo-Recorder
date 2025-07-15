@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import { FaPause, FaStop, FaSync } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+import Header from './Header';
 
 const AudioRecorder = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -8,7 +10,7 @@ const AudioRecorder = () => {
     const [audioChunks, setAudioChunks] = useState([]);
     const [timer, setTimer] = useState(0);
     const timerRef = useRef(null);
-
+   const navigate = useNavigate();
     const startRecording = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const recorder = new MediaRecorder(stream);
@@ -42,6 +44,8 @@ const AudioRecorder = () => {
     };
 
     return (
+        <>
+          <Header />
         <div className="bg-blue-100 p-8 rounded-md text-center">
             <h3 className="text-sm">Recording for: <a href="#" className="underline">Voice recorder multiple</a></h3>
             <p className="text-gray-600 mt-2">Recording in progress...</p>
@@ -64,7 +68,15 @@ const AudioRecorder = () => {
                     <FaSync />
                 </button>
             </div>
+             <button
+                onClick={() => navigate("/audio/merger")}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+                Merger Voice
+            </button>
         </div>
+        </>
+        
     );
 };
 
