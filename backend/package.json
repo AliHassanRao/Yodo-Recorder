@@ -23,6 +23,7 @@
     "mern-task-manager": "file:..",
     "mongoose": "^8.16.0",
     "multer": "^2.0.1",
+    "serverless-http": "^3.2.0",
     "yodotask": "file:.."
   },
   "devDependencies": {
