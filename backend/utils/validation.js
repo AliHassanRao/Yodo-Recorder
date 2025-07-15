@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const validateEmail = (email) => {
+export const validateEmail = (email) => {
   return String(email)
     .toLowerCase()
     .match(
@@ -8,11 +8,6 @@ const validateEmail = (email) => {
     );
 };
 
-const validateObjectId = (string) => {
+export const validateObjectId = (string) => {
   return mongoose.Types.ObjectId.isValid(string);
-}
-
-module.exports = {
-  validateEmail,
-  validateObjectId,
-}
+};

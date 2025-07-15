@@ -1,17 +1,19 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const path = require("path");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import mongoose from "mongoose";
+import path from "path";
+import cors from "cors";
+import dotenv from "dotenv";
+import authRoutes from "./routes/authRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
+import audioRoutes from "./routes/audioRoutes.js";
 
-const authRoutes = require("./routes/authRoutes");
-const profileRoutes = require("./routes/profileRoutes");
-const recordingRoutes = require('./routes/recordingRoutes');
+dotenv.config();
+
+const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
 
 const mongoUrl = process.env.MONGODB_URL;
 
@@ -37,10 +39,10 @@ connectToDatabase();
 
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
-app.use('/api', recordingRoutes);
+app.use("/api/audio", audioRoutes);
 
 app.get('/', (req, res) => {
-  res.send('<h1>Welcome to  Voice Recorder App</h1>');
+  res.send('<h1>Welcome to Voice Recorder App</h1>');
 });
 
 const port = process.env.PORT || 5000;

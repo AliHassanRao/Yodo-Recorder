@@ -1,17 +1,16 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
+
 const { ACCESS_TOKEN_SECRET } = process.env;
 
-
-exports.verifyAccessToken = async (req, res, next) => {
-
+export const verifyAccessToken = async (req, res, next) => {
   const token = req.header("Authorization");
   if (!token) return res.status(400).json({ status: false, msg: "Token not found" });
+
   let user;
   try {
     user = jwt.verify(token, ACCESS_TOKEN_SECRET);
-  }
-  catch (err) {
+  } catch (err) {
     return res.status(401).json({ status: false, msg: "Invalid token" });
   }
 
@@ -23,9 +22,8 @@ exports.verifyAccessToken = async (req, res, next) => {
 
     req.user = user;
     next();
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     return res.status(500).json({ status: false, msg: "Internal Server Error" });
   }
-}
+};

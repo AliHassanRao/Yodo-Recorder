@@ -1,10 +1,10 @@
-const User = require("../models/User");
-const bcrypt = require("bcrypt");
-const { createAccessToken } = require("../utils/token");
-const { validateEmail } = require("../utils/validation");
+import User from "../models/User.js";
+import bcrypt from "bcrypt";
+import { createAccessToken } from "../utils/token.js";
+import { validateEmail } from "../utils/validation.js";
 
 
-exports.signup = async (req, res) => {
+export const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -13,7 +13,6 @@ exports.signup = async (req, res) => {
     if (typeof name !== "string" || typeof email !== "string" || typeof password !== "string") {
       return res.status(400).json({ msg: "Please send string values only" });
     }
-
 
     if (password.length < 4) {
       return res.status(400).json({ msg: "Password length atleast 4 characters" });
@@ -31,16 +30,14 @@ exports.signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await User.create({ name, email, password: hashedPassword });
     res.status(200).json({ msg: "Congratulations!! Account has been created for you.." });
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     return res.status(500).json({ msg: "Internal Server Error" });
   }
-}
+};
 
 
-
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -56,9 +53,8 @@ exports.login = async (req, res) => {
     const token = createAccessToken({ id: user._id });
     delete user.password;
     res.status(200).json({ token, user, status: true, msg: "Login successful.." });
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     return res.status(500).json({ status: false, msg: "Internal Server Error" });
   }
-}
+};

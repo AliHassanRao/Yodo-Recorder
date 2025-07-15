@@ -1,9 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const { getProfile } = require("../controllers/profileControllers");
-const { verifyAccessToken } = require("../middlewares.js");
+import express from "express";
+import { getProfile } from "../controllers/profileControllers.js";
+import { verifyAccessToken } from "../middlewares/UserAuth.js";
 
-// Routes beginning with /api/profile
+const router = express.Router();
+
+
 router.get("/", verifyAccessToken, getProfile);
 
-module.exports = router;
+export default router;

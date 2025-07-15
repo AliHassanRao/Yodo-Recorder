@@ -7,6 +7,7 @@ import Signup from "./pages/Signup";
 import { saveProfile } from "./redux/actions/authActions";
 import NotFound from "./pages/NotFound";
 import VoiceRecorder from "./components/VoiceRecorder";
+import AudioRecorder from "./components/AudioRecorder";
 
 function App() {
 
@@ -27,7 +28,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={authState.isLoggedIn ? <Navigate to="/" /> : <Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/voice/add" element={authState.isLoggedIn ? <VoiceRecorder /> : <Navigate to="/login" state={{ redirectUrl: "/voice/add" }} />} />
+          <Route path="/voice/add" element={authState.isLoggedIn ?    <AudioRecorder /> : <Navigate to="/login" state={{ redirectUrl: "/voice/add" }} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
