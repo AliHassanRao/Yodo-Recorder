@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const mongoUrl = process.env.MONGODB_URL || 'mongodb://localhost:27017/yodotask';
+const mongoUrl = process.env.MONGODB_URL || 'mongodb+srv://alihassanrao:alihassanrao@bank.1hauq95.mongodb.net/yodotask';
 
 if (!mongoUrl) {
   console.error("MongoDB connection error: Environment variable MONGODB_URL is not defined.");
