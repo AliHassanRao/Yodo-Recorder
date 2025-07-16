@@ -20,10 +20,12 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "fluent-ffmpeg": "^2.1.3",
+    "glob": "^11.0.3",
     "jsonwebtoken": "^9.0.2",
     "mern-task-manager": "file:..",
     "mongoose": "^8.16.0",
     "multer": "^2.0.1",
+    "rimraf": "^6.0.1",
     "serverless-http": "^3.2.0",
     "yodotask": "file:.."
   },
